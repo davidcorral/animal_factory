@@ -4,6 +4,7 @@
 
 #include "cage.h"
 #include "animal.h"
+#include "animal_factory.h"
 
 namespace py = pybind11;
 
@@ -131,9 +132,16 @@ PYBIND11_MODULE(animal_factory, module)
 
     py::class_<Cage> cage(module, "Cage");
     cage.def(py::init<>());
-    cage.def("registerAnimal", (void (Cage::*)(const std::string&, py::object)) &Cage::registerAnimal);
-    cage.def("createAnimal", &Cage::createAnimal);
     cage.def("addAnimal", &Cage::addAnimal);
     cage.def("numAnimals", &Cage::numAnimals);
-    cage.def("getAnimal", &Cage::getAnimal);
+    cage.def("__getitem__", (Animal& (Cage::*)(const size_t)) &Cage::operator[] );
+    cage.def("__getitem__", (const Animal& (Cage::*)(const size_t) const) &Cage::operator[] );
+
+    py::class_<AnimalFactory> animal_factory(module, "AnimalFactory");
+    animal_factory.def(py::init<>());
+    animal_factory.def("count", &AnimalFactory::count);
+    animal_factory.def("registerAnimal", 
+        (void (AnimalFactory::*)(const std::string&, py::object)) 
+        &AnimalFactory::registerAnimal);
+    animal_factory.def("createAnimal", &AnimalFactory::createAnimal);
 }

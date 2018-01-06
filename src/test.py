@@ -48,3 +48,6 @@ if __name__ == '__main__':
 	cage.addAnimal(dog)
 	assert(cage.numAnimals() == 2)
 	
+	for i in range(cage.numAnimals()):
+		animal = cage[i]
+		

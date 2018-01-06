@@ -48,7 +48,7 @@ public:
 
 class Balto: public Dog
 {
-    public:
+public:
     typedef std::shared_ptr<Balto> Ptr;
 
     using Dog::Dog;

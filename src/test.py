@@ -29,11 +29,13 @@ if __name__ == '__main__':
 
 	# create new animal
 	cat = cage.createAnimal('cat')
+	assert(cat.typeName() == "cat")
 	assert(cat.hasLegs() == True)
 	assert(cat.hasWings() == False)
 	assert(cat.name() == 'Siouxsie')
 
-	dog = cage.createAnimal('dog')	
-	assert(cat.hasLegs() == True)
-	assert(cat.hasWings() == False)
-	assert(cat.name() == 'Balto')
+	dog = cage.createAnimal('dog')
+	assert(dog.typeName() == "dog")	
+	assert(dog.hasLegs() == True)
+	assert(dog.hasWings() == False)
+	assert(dog.name() == 'Balto')

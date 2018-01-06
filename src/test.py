@@ -19,14 +19,14 @@ class Cat(Animal):
 		return 'Siouxsie'
 
 	@staticmethod
-	def create():
+	def creator():
 		return Cat()
 
 if __name__ == '__main__':	
 
 	# register animal
 	animal_factory = AnimalFactory()
-	animal_factory.registerAnimal('cat', Cat.create)
+	animal_factory.registerAnimal('cat', Cat.creator)
 	assert(animal_factory.count() == 2)
 	
 	# create new animals

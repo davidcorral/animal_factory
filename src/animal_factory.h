@@ -10,17 +10,24 @@ namespace py = pybind11;
 
 #include "animal.h"
 
+// -----------------------------------------------------------------------------
+
 class AnimalFactory
 {
 public:
 
     AnimalFactory()
     {
+        // add built-in animal
         registerAnimal("dog", Balto::creator);
     };
 
     size_t
-    count() const { return m_registered_animals.size() + m_registered_scripted_animals.size(); };
+    count() const 
+    { 
+        return m_registered_animals.size() + 
+               m_registered_scripted_animals.size();
+    };
 
     void
     registerAnimal(const std::string& animal_type, py::object creator)

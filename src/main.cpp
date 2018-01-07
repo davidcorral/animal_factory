@@ -114,7 +114,7 @@ public:
 
 // -----------------------------------------------------------------------------
 
-PYBIND11_MODULE(animal_factory, module) 
+PYBIND11_MODULE(animal_factory_lib, module) 
 {
     py::class_<Animal, PyAnimal, Animal::Ptr> animal(module, "Animal");
     animal.def(py::init<>());
@@ -129,19 +129,21 @@ PYBIND11_MODULE(animal_factory, module)
     dog.def("hasLegs", &Dog::hasLegs);
     dog.def("hasWings", &Dog::hasWings);
     dog.def("name", &Dog::name);
+    dog.def("bark", &Dog::bark);
 
     py::class_<Cage> cage(module, "Cage");
     cage.def(py::init<>());
     cage.def("addAnimal", &Cage::addAnimal);
     cage.def("numAnimals", &Cage::numAnimals);
-    cage.def("__getitem__", (Animal& (Cage::*)(const size_t)) &Cage::operator[] );
-    cage.def("__getitem__", (const Animal& (Cage::*)(const size_t) const) &Cage::operator[] );
+    cage.def("__getitem__", (Animal* (Cage::*)(const size_t)) &Cage::operator[] );
+    cage.def("__getitem__", (const Animal* (Cage::*)(const size_t) const) &Cage::operator[] );
 
     py::class_<AnimalFactory> animal_factory(module, "AnimalFactory");
     animal_factory.def(py::init<>());
     animal_factory.def("count", &AnimalFactory::count);
+    animal_factory.def("isRegistered", &AnimalFactory::isRegistered);
     animal_factory.def("registerAnimal", 
-        (void (AnimalFactory::*)(const std::string&, py::object)) 
+        (bool (AnimalFactory::*)(const std::string&, py::object)) 
         &AnimalFactory::registerAnimal);
     animal_factory.def("createAnimal", &AnimalFactory::createAnimal);
 }

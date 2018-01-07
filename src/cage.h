@@ -15,11 +15,11 @@ public:
     void
     addAnimal( Animal::Ptr animal ) { m_animals.push_back(animal); };
     ///
-    Animal&
-    operator[](const size_t index) { return *m_animals[index]; };
+    Animal*
+    operator[](const size_t index) { return m_animals[index].get(); };
     ///
-    const Animal&
-    operator[](const size_t index) const { return *m_animals[index]; };
+    const Animal*
+    operator[](const size_t index) const { return m_animals[index].get(); };
     
 private:
     std::vector< Animal::Ptr > m_animals;

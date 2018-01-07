@@ -1,4 +1,4 @@
-set( LIB_NAME animal_factory )
+set( LIB_NAME animal_factory_lib )
 
 file(GLOB SOURCE_FILES "*.h" "*.cpp" )
 
@@ -18,8 +18,4 @@ set_target_properties(${LIB_NAME}
         SUFFIX ${LIB_SUFFIX})
 
 install( TARGETS ${LIB_NAME} 
-         LIBRARY DESTINATION ${CMAKE_SOURCE_DIR}/dist/ )
-
-install( FILES ${CMAKE_SOURCE_DIR}/src/test.py DESTINATION ${CMAKE_SOURCE_DIR}/dist/ )
-
-        
+         LIBRARY DESTINATION ${CMAKE_SOURCE_DIR}/dist/python/animal_factory/ )

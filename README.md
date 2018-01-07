@@ -14,6 +14,9 @@ cmake ..
 make install
 ```
 
-## Run the tests ##
-    cd dist
-    python test.py
+## Run the unittests ##
+```bash
+cd dist
+cd python
+python test.py
+```

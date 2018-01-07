@@ -29,16 +29,31 @@ public:
                m_registered_scripted_animals.size();
     };
 
-    void
-    registerAnimal(const std::string& animal_type, py::object creator)
+    bool
+    isRegistered(const std::string& animal_type) const
     {
-        m_registered_scripted_animals[animal_type] = creator;
+        return (m_registered_animals.count(animal_type) ||
+                m_registered_scripted_animals.count(animal_type));
     };
 
-    void
+    bool
+    registerAnimal(const std::string& animal_type, py::object creator)
+    {
+        if (isRegistered(animal_type))
+            return false;
+
+        m_registered_scripted_animals[animal_type] = creator;
+        return true;
+    };
+
+    bool
     registerAnimal(const std::string& animal_type, Animal::Ptr (*creator)(void) )
     {
+        if (isRegistered(animal_type))
+            return false;
+
         m_registered_animals[animal_type] = creator;
+        return true;
     };
 
     py::object

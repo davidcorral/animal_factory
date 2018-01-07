@@ -44,6 +44,9 @@ public:
     ///
     std::string
     name() const override = 0;
+
+    std::string
+    bark() const { return "woof"; };
 };
 
 class Balto: public Dog

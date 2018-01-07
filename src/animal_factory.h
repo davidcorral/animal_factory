@@ -9,6 +9,7 @@
 namespace py = pybind11;
 
 #include "animal.h"
+#include "balto.h"
 
 // -----------------------------------------------------------------------------
 
@@ -19,7 +20,7 @@ public:
     AnimalFactory()
     {
         // add built-in animal
-        registerAnimal("dog", Balto::creator);
+        registerAnimal("balto", Balto::creator);
     };
 
     size_t
@@ -30,44 +31,58 @@ public:
     };
 
     bool
-    isRegistered(const std::string& animal_type) const
+    isRegistered(const std::string& animal_name) const
     {
-        return (m_registered_animals.count(animal_type) ||
-                m_registered_scripted_animals.count(animal_type));
+        return (m_registered_animals.count(animal_name) ||
+                m_registered_scripted_animals.count(animal_name));
     };
 
     bool
-    registerAnimal(const std::string& animal_type, py::object creator)
+    registerAnimal(const std::string& animal_name, py::object creator)
     {
-        if (isRegistered(animal_type))
+        if (isRegistered(animal_name))
             return false;
 
-        m_registered_scripted_animals[animal_type] = creator;
+        m_registered_scripted_animals[animal_name] = creator;
         return true;
     };
 
     bool
-    registerAnimal(const std::string& animal_type, Animal::Ptr (*creator)(void) )
+    registerAnimal(const std::string& animal_name, Animal::Ptr (*creator)(void) )
     {
-        if (isRegistered(animal_type))
+        if (isRegistered(animal_name))
             return false;
 
-        m_registered_animals[animal_type] = creator;
+        m_registered_animals[animal_name] = creator;
         return true;
+    };
+
+    Animal::Ptr
+    createAnimal(const std::string& animal_name)
+    {
+        // if (m_registered_animals.count(animal_name))
+        // {
+        //     return py::cast(m_registered_animals[animal_name]());
+        // }
+        if (m_registered_animals.count(animal_name))
+        {
+            return m_registered_animals[animal_name]();
+        }
+
+        return nullptr;
     };
 
     py::object
-    createAnimal(const std::string& animal_type)
+    createScriptedAnimal(const std::string& animal_name)
     {
-        if (m_registered_animals.count(animal_type))
+        // if (m_registered_animals.count(animal_type))
+        // {
+        //     return py::cast(m_registered_animals[animal_type]());
+        // }
+        if (m_registered_scripted_animals.count(animal_name))
         {
-            return py::cast(m_registered_animals[animal_type]());
-        }
-        else if (m_registered_scripted_animals.count(animal_type))
-        {
-            return m_registered_scripted_animals[animal_type]();
+            return m_registered_scripted_animals[animal_name]();
         };
-
         return py::object();
     };
 

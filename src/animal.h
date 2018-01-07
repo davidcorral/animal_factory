@@ -16,11 +16,11 @@ public:
     virtual std::string 
     typeName() const { return "animal"; };    
     ///
-    virtual 
-    bool hasLegs() const = 0;
+    virtual bool 
+    hasLegs() const = 0;
     ///
-    virtual
-    bool hasWings() const = 0;
+    virtual bool 
+    hasWings() const = 0;
     ///
     virtual std::string
     name() const = 0;
@@ -45,29 +45,13 @@ public:
     hasLegs() const override { return true; };    
     ///
     bool
-    hasWings() const override { return false; };    
+    hasWings() const override { return false; };  
+    // ///
+    // virtual std::string
+    // name() const = 0;
     ///
-    std::string
-    name() const override = 0;
-
     std::string
     bark() const { return "woof"; };
-};
-
-class Balto: public Dog
-{
-public:
-    typedef std::shared_ptr<Balto> Ptr;
-
-    using Dog::Dog;
-    virtual ~Balto(){}
-     
-    ///
-    std::string
-    name() const override { return "Balto"; };
-    ///
-    static Animal::Ptr
-    creator(){ return std::make_shared<Balto>(); };
 };
 
 Dog&

@@ -55,19 +55,34 @@ class TestFactory(unittest.TestCase):
     def test_cat(self):
         
         siouxsie = Siouxsie()
+        self.assertTrue(isinstance(siouxsie, Animal))
         self.assertEqual(siouxsie.typeName(), "cat")
         self.assertTrue(siouxsie.hasLegs())
         self.assertFalse(siouxsie.hasWings())
         self.assertEqual(siouxsie.name(), 'Siouxsie')
+        self.assertTrue(hasattr(siouxsie, 'meow'))        
         self.assertEqual(siouxsie.meow(), 'meow')
+
+    def test_balto(self):
+        
+        balto = Balto()
+        self.assertTrue(isinstance(balto, Animal))
+        self.assertTrue(isinstance(balto, Dog))        
+        self.assertEqual(balto.typeName(), "dog")
+        self.assertTrue(balto.hasLegs())
+        self.assertFalse(balto.hasWings())
+        self.assertEqual(balto.name(), 'Balto')
+        self.assertTrue(hasattr(balto, 'bark'))        
+        self.assertEqual(balto.bark(), 'woof')
         
     # @unittest.skip('...')
-    def test_dog(self):
+    def test_registered_balto(self):
 
         factory = AnimalFactory()
         self.assertTrue(factory.isRegistered('balto'))
 
         balto = factory.createAnimal('balto')
+        self.assertTrue(isinstance(balto, Animal))
         self.assertTrue(isinstance(balto, Dog))
         self.assertTrue(hasattr(balto, 'bark'))
         self.assertEqual(balto.bark(), 'woof')

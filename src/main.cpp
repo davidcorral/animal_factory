@@ -63,70 +63,35 @@ public:
     };
 };
 
-class PyDog : public Dog 
+template <typename DogBase, typename Base>
+class TPyDog : public DogBase
 {
 public:
-    using Dog::Dog; // Inherit constructors
-    
-    /* Trampoline (need one for each virtual function) */
-    std::string 
-    typeName() const override 
-    { 
-        PYBIND11_OVERLOAD(
-            std::string, /* Return type */
-            Dog,         /* Parent class */
-            typeName     /* Name of function in C++ (must match Python name) */
-        );
-    };
-
-    /* Trampoline (need one for each virtual function) */
-    bool 
-    hasLegs() const override 
-    { 
-        PYBIND11_OVERLOAD_PURE(
-            bool,    /* Return type */
-            Dog,     /* Parent class */
-            hasLegs, /* Name of function in C++ (must match Python name) */
-        );
-    };
-
-    /* Trampoline (need one for each virtual function) */
-    bool 
-    hasWings() const override 
-    {
-        PYBIND11_OVERLOAD_PURE(
-            bool,     /* Return type */
-            Dog,      /* Parent class */
-            hasWings, /* Name of function in C++ (must match Python name) */
-        );
-    };  
-    std::string 
-    name() const override 
-    { 
-        PYBIND11_OVERLOAD_PURE(
-            std::string, /* Return type */
-            Dog,         /* Parent class */
-            name,        /* Name of function in C++ (must match Python name) */
-        ); 
-    };
-};
-
-class PyBalto : public Balto
-{
-public:
-    using Balto::Balto; // Inherit constructors
+    using DogBase::DogBase; // Inherit constructors
     
     std::string 
-    typeName() const override { PYBIND11_OVERLOAD( std::string, Balto, typeName ); };
+    typeName() const override { PYBIND11_OVERLOAD( std::string, DogBase, typeName ); };
 
     bool 
-    hasLegs() const override { PYBIND11_OVERLOAD_PURE( bool,  Balto,  hasLegs ); };
+    hasLegs() const override { PYBIND11_OVERLOAD_PURE( bool,  DogBase,  hasLegs ); };
 
     bool 
-    hasWings() const override { PYBIND11_OVERLOAD_PURE( bool, Balto,  hasWings ); };
+    hasWings() const override { PYBIND11_OVERLOAD_PURE( bool, DogBase,  hasWings ); };
 
     std::string
-    name() const override { PYBIND11_OVERLOAD_PURE( std::string, Balto,  name ); };
+    name() const override { PYBIND11_OVERLOAD_PURE( std::string, DogBase,  name ); };
+
+    static void
+    createClass(py::module& class_module, const std::string& class_name)
+    {
+        py::class_<DogBase, TPyDog<DogBase, Base>, std::shared_ptr<DogBase>, Base> dog_base(class_module, class_name.c_str());
+        dog_base.def(py::init<>());
+        dog_base.def("typeName", &DogBase::typeName);
+        dog_base.def("hasLegs", &DogBase::hasLegs);
+        dog_base.def("hasWings", &DogBase::hasWings);
+        dog_base.def("name", &DogBase::name);
+        dog_base.def("bark", &DogBase::bark);
+    }
 };
 
 // -----------------------------------------------------------------------------
@@ -139,23 +104,9 @@ PYBIND11_MODULE(animal_factory_lib, module)
     animal.def("hasLegs", &Animal::hasLegs);
     animal.def("hasWings", &Animal::hasWings);
     animal.def("name", &Animal::name);
-    animal.def("asDog", &Animal::asDog, py::return_value_policy::reference_internal);
-
-    py::class_<Dog, PyDog, Dog::Ptr, Animal> dog(module, "Dog");
-    dog.def(py::init<>());
-    dog.def("typeName", &Dog::typeName);
-    dog.def("hasLegs", &Dog::hasLegs);
-    dog.def("hasWings", &Dog::hasWings);
-    dog.def("name", &Dog::name);
-    dog.def("bark", &Dog::bark);
-
-    py::class_<Balto, PyBalto, Balto::Ptr, Dog> balto(module, "Balto");
-    balto.def(py::init<>());
-    balto.def("typeName", &Balto::typeName);
-    balto.def("hasLegs", &Balto::hasLegs);
-    balto.def("hasWings", &Balto::hasWings);
-    balto.def("name", &Balto::name);
-    balto.def("bark", &Balto::bark);
+    
+    TPyDog<Dog, Animal>::createClass(module, "Dog");
+    TPyDog<Balto, Dog>::createClass(module, "Balto");
 
     py::class_<Cage> cage(module, "Cage");
     cage.def(py::init<>());

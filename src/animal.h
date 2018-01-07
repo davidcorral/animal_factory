@@ -24,9 +24,6 @@ public:
     ///
     virtual std::string
     name() const = 0;
-    ///
-    Dog&
-    asDog();
 };
 
 class Dog: public Animal
@@ -46,13 +43,7 @@ public:
     ///
     bool
     hasWings() const override { return false; };  
-    // ///
-    // virtual std::string
-    // name() const = 0;
     ///
     std::string
     bark() const { return "woof"; };
 };
-
-Dog&
-Animal::asDog(){ return *dynamic_cast<Dog*>(this); };

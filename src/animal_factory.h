@@ -60,10 +60,6 @@ public:
     Animal::Ptr
     createAnimal(const std::string& animal_name)
     {
-        // if (m_registered_animals.count(animal_name))
-        // {
-        //     return py::cast(m_registered_animals[animal_name]());
-        // }
         if (m_registered_animals.count(animal_name))
         {
             return m_registered_animals[animal_name]();
@@ -75,10 +71,6 @@ public:
     py::object
     createScriptedAnimal(const std::string& animal_name)
     {
-        // if (m_registered_animals.count(animal_type))
-        // {
-        //     return py::cast(m_registered_animals[animal_type]());
-        // }
         if (m_registered_scripted_animals.count(animal_name))
         {
             return m_registered_scripted_animals[animal_name]();

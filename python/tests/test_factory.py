@@ -8,6 +8,7 @@ from animal_factory.cat import Cat
 
 class TestFactory(unittest.TestCase):
 
+    #@unittest.skip('...')
     def test_factory(self):
 
         factory = AnimalFactory()
@@ -42,6 +43,18 @@ class TestFactory(unittest.TestCase):
         cage.addAnimal(dog)
         self.assertEqual(cage.numAnimals(), 2)
 
+    def test_dog(self):
+
+        factory = AnimalFactory()
+        self.assertTrue(factory.isRegistered('dog'))
+
+        dog = factory.createAnimal('dog')
+
+        # NOTE: this is less than ideal
+        self.assertFalse(isinstance(dog, Dog))
+        self.assertTrue(isinstance(dog.asDog(), Dog))
+        self.assertEqual(dog.asDog().bark(), 'woof')
+        
 if __name__ == '__main__':
     unittest.main()
     

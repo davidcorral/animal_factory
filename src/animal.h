@@ -3,6 +3,7 @@
 #include <memory>
 #include <string>
 
+class Dog;
 // -----------------------------------------------------------------------------
 
 class Animal
@@ -23,12 +24,16 @@ public:
     ///
     virtual std::string
     name() const = 0;
+    ///
+    Dog&
+    asDog();
 };
 
 class Dog: public Animal
 {
 public:
-    
+    typedef std::shared_ptr<Dog> Ptr;
+
     using Animal::Animal;
     virtual ~Dog(){}
     
@@ -64,3 +69,6 @@ public:
     static Animal::Ptr
     creator(){ return std::make_shared<Balto>(); };
 };
+
+Dog&
+Animal::asDog(){ return *dynamic_cast<Dog*>(this); };

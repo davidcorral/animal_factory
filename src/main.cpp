@@ -122,6 +122,7 @@ PYBIND11_MODULE(animal_factory_lib, module)
     animal.def("hasLegs", &Animal::hasLegs);
     animal.def("hasWings", &Animal::hasWings);
     animal.def("name", &Animal::name);
+    animal.def("asDog", &Animal::asDog, py::return_value_policy::reference_internal);
 
     py::class_<Dog, PyDog> dog(module, "Dog");
     dog.def(py::init<>());
@@ -145,5 +146,5 @@ PYBIND11_MODULE(animal_factory_lib, module)
     animal_factory.def("registerAnimal", 
         (bool (AnimalFactory::*)(const std::string&, py::object)) 
         &AnimalFactory::registerAnimal);
-    animal_factory.def("createAnimal", &AnimalFactory::createAnimal);
+    animal_factory.def("createAnimal", &AnimalFactory::createAnimal, py::return_value_policy::move);
 }

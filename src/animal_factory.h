@@ -24,7 +24,7 @@ public:
     };
 
     size_t
-    count() const 
+    numRegisteredAnimals() const 
     { 
         return m_registered_animals.size() + 
                m_registered_scripted_animals.size();

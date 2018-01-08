@@ -20,6 +20,17 @@ public:
     ///
     const Animal*
     operator[](const size_t index) const { return m_animals[index].get(); };
+    ///
+    std::vector<Animal*>
+    animals()
+    { 
+        std::vector<Animal*> animals;
+        for (auto& animal: m_animals)
+        {
+            animals.push_back(animal.get());
+        };
+        return animals;
+    };
     
 private:
     std::vector< Animal::Ptr > m_animals;

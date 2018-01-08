@@ -1,6 +1,7 @@
 #include <memory>
 #include <string>
 #include <pybind11/pybind11.h>
+#include <pybind11/stl.h>
 
 #include "cage.h"
 #include "animal.h"
@@ -114,10 +115,11 @@ PYBIND11_MODULE(animal_factory_lib, module)
     cage.def("numAnimals", &Cage::numAnimals);
     cage.def("__getitem__", (Animal* (Cage::*)(const size_t)) &Cage::operator[] );
     cage.def("__getitem__", (const Animal* (Cage::*)(const size_t) const) &Cage::operator[] );
-
+    cage.def("animals", &Cage::animals);
+    
     py::class_<AnimalFactory> animal_factory(module, "AnimalFactory");
     animal_factory.def(py::init<>());
-    animal_factory.def("count", &AnimalFactory::count);
+    animal_factory.def("numRegisteredAnimals", &AnimalFactory::numRegisteredAnimals);
     animal_factory.def("isRegistered", &AnimalFactory::isRegistered);
     animal_factory.def("registerAnimal", 
         (bool (AnimalFactory::*)(const std::string&, py::object)) 

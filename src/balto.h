@@ -11,7 +11,7 @@ public:
     typedef std::shared_ptr<Balto> Ptr;
 
     using Dog::Dog;
-    virtual ~Balto(){}
+    virtual ~Balto() = default;
     ///
     std::string
     name() const override { return "Balto"; };  

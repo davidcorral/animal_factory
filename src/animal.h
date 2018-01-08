@@ -11,7 +11,7 @@ class Animal
 public:
     typedef std::shared_ptr<Animal> Ptr;
 
-    virtual ~Animal(){}
+    virtual ~Animal() = default;
     /// 
     virtual std::string 
     typeName() const { return "animal"; };    
@@ -32,7 +32,7 @@ public:
     typedef std::shared_ptr<Dog> Ptr;
 
     using Animal::Animal;
-    virtual ~Dog(){}
+    virtual ~Dog() = default;
     
     /// 
     std::string 
